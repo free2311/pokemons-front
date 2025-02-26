@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@tailwind utilities;
+
+/***/
+
+.card {
+	background-color: white;
+	border-radius: 0.5rem;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	transition: transform 0.2s;
+}
+
+.card:hover {
+	transform: translateY(-0.5rem);
+}
+
+.card img {
+	height: auto;
+}
+
+.card-content {
+	padding: 1rem;
+}
+
+.card-title {
+	font-size: 1.25rem;
+	font-weight: 700;
+	margin-bottom: 0.5rem;
+}
+
+.card-description {
+	font-size: 1rem;
+	color: #4a5568;
+}
