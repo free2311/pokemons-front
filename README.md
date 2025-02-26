@@ -1,6 +1,6 @@
-# API Pokemos
+# API Pokemons
 
-Este proyecto es una aplicación web que consume la API de Pokémon para mostrar información sobre diferentes Pokémon. Utiliza React, React Query, React Router y Tailwind CSS para la interfaz de usuario, y React Toastify para las notificaciones.
+Este proyecto es una aplicación web que consume la API de Pokémons para mostrar información sobre diferentes Pokémon. Utiliza React, React Query, React Router y Tailwind CSS para la interfaz de usuario, y React Toastify para las notificaciones.
 
 ## Tecnologías utilizadas
 
