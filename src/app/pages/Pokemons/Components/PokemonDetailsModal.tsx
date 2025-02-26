@@ -1,7 +1,7 @@
 import { Modal, Box, Typography } from "@mui/material";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
-import { PokemonwithImage } from "../interfaces/PokeApiResponse";
+import { PokemonWithImage } from "../interfaces/PokeApiResponse";
 import PokeService from "../services/PokeService";
 import { useQuery } from "@tanstack/react-query";
 
@@ -12,7 +12,7 @@ const capitalize = (str: string) => {
 const PokemonDetailsModal = (props: {
 	open: boolean;
 	onClose: () => void;
-	pokemon: PokemonwithImage | null;
+	pokemon: PokemonWithImage | null;
 }) => {
 	const { open, onClose, pokemon } = props;
 	const { data } = useQuery({

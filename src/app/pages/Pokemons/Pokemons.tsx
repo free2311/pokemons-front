@@ -53,7 +53,13 @@ export default function Pokemons() {
 		staleTime: 1000 * 60 * 5,
 		retry: 0,
 		refetchOnWindowFocus: false,
-		onSuccess: (data) => {
+		onSuccess: (data: {
+			name: any;
+			sprites: { front_default: any };
+			types: any;
+			weight: any;
+			abilities: any;
+		}) => {
 			if (data) {
 				const filter_pokemon: PokemonWithImage = {
 					name: data.name,
