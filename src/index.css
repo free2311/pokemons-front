@@ -2,7 +2,9 @@
 
 @tailwind utilities;
 
-/***/
+* {
+	font-family: "Poppins", roboto;
+}
 
 .card {
 	background-color: white;

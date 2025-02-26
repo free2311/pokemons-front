@@ -1,22 +1,20 @@
 import ReactDOM from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./index.css";
 import Pokemons from "./app/pages/Pokemons/Pokemons";
 import { ToastContainer } from "react-toastify";
-
-const queryClient = new QueryClient();
+import QueryProvider from "./providers/QueryProvider";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<Router>
-		<QueryClientProvider client={queryClient}>
+		<QueryProvider>
 			<Routes>
 				{/* Rutas */}
-				<Route path="*" element={<Pokemons />} />
-				<Route path="/" element={<Pokemons />} />
 				<Route path="/pokemons" element={<Pokemons />} />
+				<Route path="*" element={<Navigate to={"/pokemons"} />} />
 			</Routes>
 			<ToastContainer />
-		</QueryClientProvider>
+		</QueryProvider>
 	</Router>
 );

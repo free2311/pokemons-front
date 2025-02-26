@@ -1,9 +1,13 @@
 import { Modal, Box, Typography } from "@mui/material";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
-import { PokemonwithImage } from "../Interfaces/PokeApiResponse";
-import ApiService from "../Services/ApiService";
+import { PokemonwithImage } from "../interfaces/PokeApiResponse";
+import PokeService from "../services/PokeService";
 import { useQuery } from "@tanstack/react-query";
+
+const capitalize = (str: string) => {
+	return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
 
 const PokemonDetailsModal = (props: {
 	open: boolean;
@@ -13,7 +17,7 @@ const PokemonDetailsModal = (props: {
 	const { open, onClose, pokemon } = props;
 	const { data } = useQuery({
 		queryKey: ["abilities", pokemon],
-		queryFn: async () => ApiService.getDescriptionAbilities(pokemon?.abilities),
+		queryFn: async () => PokeService.getDescriptionAbilities(pokemon?.abilities),
 		staleTime: 1000 * 60 * 5,
 		retry: 0,
 		refetchOnWindowFocus: false,
@@ -39,34 +43,47 @@ const PokemonDetailsModal = (props: {
 					sx={{
 						p: 4,
 						bgcolor: "background.paper",
-						width: "400px",
+						minWidth: { xs: "300px", sm: "400px", md: "35%", lg: "30%" },
+						width: "auto",
 						borderRadius: "8px",
 						boxShadow: 24,
 						outline: "none",
 					}}
 				>
-					<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+					<Box
+						sx={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "space-between",
+							mb: 2,
+						}}
+					>
+						<Box sx={{ flexGrow: 1, textAlign: "center" }}>
+							<Typography variant="h6" id="parent-modal-title">
+								Detalles del Pokémon
+							</Typography>
+						</Box>
 						<Typography variant="body1" sx={{ cursor: "pointer" }} onClick={onClose}>
 							X
 						</Typography>
 					</Box>
-					<Typography variant="h6" id="parent-modal-title" sx={{ mb: 2 }}>
-						Detalles del Pokémon
-					</Typography>
 
-					<Typography variant="body1" sx={{ mb: 1 }}>
-						Tipo:
-						<SimpleTreeView>
-							{pokemon?.types?.map((type, index) => (
-								<TreeItem
-									itemId={String(type?.slot)}
-									key={index}
-									label={type.type.name ? type.type.name : ""}
-									className="mb-10"
-								></TreeItem>
-							))}
-						</SimpleTreeView>
-					</Typography>
+					<SimpleTreeView>
+						<Typography variant="body1" sx={{ mb: 1 }}>
+							Tipo:
+						</Typography>
+						{pokemon?.types?.map((type, index) => (
+							<TreeItem
+								itemId={String(type?.slot)}
+								key={index}
+								label={type.type.name ? "> " + capitalize(type.type.name) : ""}
+								className="mb-10"
+								sx={{
+									pointerEvents: "none",
+								}}
+							></TreeItem>
+						))}
+					</SimpleTreeView>
 
 					<Typography variant="body1" sx={{ mb: 1 }}>
 						Peso: {pokemon?.weight} Kg
@@ -80,7 +97,7 @@ const PokemonDetailsModal = (props: {
 							<TreeItem
 								itemId={String(ability?.slot)}
 								key={index}
-								label={ability.ability.name ? ability.ability.name : ""}
+								label={ability.ability.name ? capitalize(ability.ability.name) : ""}
 								className="mb-10"
 							>
 								{data && (

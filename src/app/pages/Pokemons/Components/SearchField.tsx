@@ -6,15 +6,12 @@ const SearchField = (props: { value: string; onChange: (value: string) => void }
 	const { value, onChange } = props;
 	const [inputValue, setInputValue] = useState(value);
 
-	// Debounce para ejecutar la función onChange después de 500ms sin escribir
 	const debouncedOnChange = useCallback(
 		debounce((val: string) => {
 			onChange(val);
 		}, 1000),
 		[onChange]
 	);
-
-	// Manejar cambios en el input
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newValue = event.target.value;
 

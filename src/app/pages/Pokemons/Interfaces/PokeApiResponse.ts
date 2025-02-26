@@ -20,12 +20,13 @@ export interface PokemonData {
 	sprites: {
 		front_default: string;
 	};
+	count: number;
 }
 
-export interface PokemonwithImage {
+export interface PokemonWithImage {
 	name: string;
 	image?: string;
-	types?: TypePokemon[];
+	types?: TypePokemon[] | [];
 	weight?: number;
 	abilities?: Ability[];
 }

@@ -1,7 +1,7 @@
-import { Ability, PokeAPIResponse, PokemonData } from "../Interfaces/PokeApiResponse";
+import { Ability, PokeAPIResponse, PokemonData } from "../interfaces/PokeApiResponse";
 import "react-toastify/dist/ReactToastify.css";
 
-class ApiService {
+class PokeService {
 	private baseUrl: string;
 
 	constructor() {
@@ -21,7 +21,8 @@ class ApiService {
 			}
 			const data: PokeAPIResponse = await response.json();
 
-			// devolver results y count
+			// hacer logica de traer informacion de cada pokemon
+
 			return { results: data.results, count: data.count };
 		} catch (error) {
 			console.error("Error fetching Pokemon data:", error);
@@ -31,11 +32,13 @@ class ApiService {
 
 	async getPokemonDetails(name: string): Promise<PokemonData | null> {
 		try {
-			const response = await fetch(`${this.baseUrl}/pokemon/${name}`);
+			const response = await fetch(`${this.baseUrl}pokemon/${name}`);
 			if (!response.ok) {
 				return null;
 			}
-			const data = await response.json();
+			const data: PokemonData = await response.json();
+			// agregar a data el count de 1
+			data.count = 1;
 			return data;
 		} catch (error) {
 			console.error("Error fetching Pokemon details:", error);
@@ -69,4 +72,4 @@ class ApiService {
 	}
 }
 
-export default new ApiService();
+export default new PokeService();

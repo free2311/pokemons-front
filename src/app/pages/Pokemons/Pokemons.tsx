@@ -1,15 +1,16 @@
-import TablePokemons from "./Components/Table";
+import TablePokemons from "./components/Table";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import ApiService from "./Services/ApiService";
-import { PokemonData, PokemonwithImage, Result } from "./Interfaces/PokeApiResponse";
+import PokeService from "./services/PokeService";
+import { PokemonData, PokemonWithImage, Result } from "./interfaces/PokeApiResponse";
 import ProgressBar from "../../shared/LoadingBar";
 import "../../../index.css";
+import { toast } from "react-toastify";
+import SearchField from "./components/SearchField";
 
 export default function Pokemons() {
-	const [pokemonsWithImages, setPokemonsWithImages] = useState<PokemonwithImage[] | null>(
-		[]
-	);
+	const [pokemonsWithImages, setPokemonsWithImages] = useState<PokemonWithImage[]>([]);
+	const [search, setSearch] = useState("");
 	const [count, setCount] = useState(0);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -19,27 +20,71 @@ export default function Pokemons() {
 		queryKey: ["pokemons", page, rowsPerPage],
 		queryFn: async () => {
 			setProgress(30);
-			const response = await ApiService.getPokemons(
+			const response = await PokeService.getPokemons(
 				rowsPerPage.toString(),
 				(page * rowsPerPage).toString()
 			);
+
 			setProgress(70);
 			return response;
 		},
-
 		staleTime: 1000 * 60 * 5,
 		retry: 0,
 		refetchOnWindowFocus: false,
 	});
 
+	useQuery({
+		queryKey: ["search", search],
+		queryFn: async () => {
+			if (search === "") return null;
+			const pokemon: PokemonData | null = await PokeService.getPokemonDetails(search);
+			if (pokemon === null) {
+				setPokemonsWithImages([]);
+				setCount(0);
+				toast.error("No se encontro información del pokemón", {
+					position: "top-center",
+					autoClose: 2000,
+				});
+				return null;
+			}
+			return pokemon;
+		},
+		enabled: search !== "",
+		staleTime: 1000 * 60 * 5,
+		retry: 0,
+		refetchOnWindowFocus: false,
+		onSuccess: (data) => {
+			if (data) {
+				const filter_pokemon: PokemonWithImage = {
+					name: data.name,
+					image: data.sprites.front_default,
+					types: data.types,
+					weight: data.weight,
+					abilities: data.abilities,
+				};
+				setPokemonsWithImages([filter_pokemon]);
+				setCount(1);
+			}
+		},
+		onError: () => {
+			setPokemonsWithImages([]);
+			setCount(0);
+		},
+	});
+
+	const handleSearchChange = async (value: string) => {
+		setSearch(value);
+	};
+
 	useEffect(() => {
 		if (!data) return;
+
 		setCount(data.count);
 
 		const fetchPokemonDetails = async () => {
 			const pokemons = await Promise.all(
 				data?.results.map(async (pokemon: Result) => {
-					const details: PokemonData | null = await ApiService.getPokemonDetails(
+					const details: PokemonData | null = await PokeService.getPokemonDetails(
 						pokemon.name
 					);
 					if (details === null) {
@@ -61,6 +106,7 @@ export default function Pokemons() {
 					};
 				})
 			);
+
 			setPokemonsWithImages(pokemons);
 		};
 
@@ -68,27 +114,28 @@ export default function Pokemons() {
 	}, [data]);
 
 	return (
-		<div className="container-fluid px-10 pt-5 pb-0">
-			{isLoading ? (
-				<>
-					<ProgressBar progress={progress} />
-				</>
-			) : error ? (
-				<div className="card">Error loading data</div>
-			) : pokemonsWithImages !== null && pokemonsWithImages?.length > 0 ? (
-				<div className="">
-					<TablePokemons
-						data={pokemonsWithImages}
-						page={page}
-						rowsPerPage={rowsPerPage}
-						onPageChange={setPage}
-						onRowsPerPageChange={setRowsPerPage}
-						count={count}
-					/>
-				</div>
-			) : (
-				<div className="card">No data</div>
-			)}
-		</div>
+		<>
+			<div className="container-fluid px-10 pt-5 pb-0">
+				{isLoading ? (
+					<>
+						<ProgressBar progress={progress} />
+					</>
+				) : error ? (
+					<div className="card">Error loading data</div>
+				) : (
+					<div className="">
+						<SearchField value={search} onChange={handleSearchChange} />
+						<TablePokemons
+							data={pokemonsWithImages}
+							page={page}
+							rowsPerPage={rowsPerPage}
+							onPageChange={setPage}
+							onRowsPerPageChange={setRowsPerPage}
+							count={count}
+						/>
+					</div>
+				)}
+			</div>
+		</>
 	);
 }
