@@ -1,24 +1,29 @@
 import { TextField } from "@mui/material";
-import { useState, useCallback } from "react";
-import debounce from "lodash.debounce";
 
-const SearchField = (props: { value: string; onChange: (value: string) => void }) => {
-	const { value, onChange } = props;
-	const [inputValue, setInputValue] = useState(value);
+type SearchFieldProps = {
+	value: string;
+	refetch: () => void;
+	setInputValue: (value: string) => void;
+};
 
-	const debouncedOnChange = useCallback(
-		debounce((val: string) => {
-			onChange(val);
-		}, 1000),
-		[onChange]
-	);
+const SearchField = ({ value, setInputValue, refetch }: SearchFieldProps) => {
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newValue = event.target.value;
-
 		// Validar solo letras y espacios
-		if (/^[a-zA-Z\s]*$/.test(newValue)) {
-			setInputValue(newValue);
-			debouncedOnChange(newValue);
+		if (!/^[a-zA-Z\s]*$/.test(newValue)) return;
+		if (newValue == "") {
+			setInputValue("");
+		}
+		setInputValue(newValue);
+	};
+
+	const handleKeyPress = async (e: React.KeyboardEvent<HTMLDivElement>) => {
+		if (e.key === "Backspace" && value === "") {
+			await refetch();
+		}
+
+		if (e.key === "Enter") {
+			await refetch();
 		}
 	};
 
@@ -28,8 +33,9 @@ const SearchField = (props: { value: string; onChange: (value: string) => void }
 			variant="outlined"
 			fullWidth
 			margin="normal"
-			value={inputValue}
+			value={value}
 			onChange={handleChange}
+			onKeyDown={handleKeyPress}
 			sx={{
 				width: { xs: "100%", sm: "100%", lg: "80%" },
 				maxWidth: "1200px",

@@ -11,6 +11,10 @@ import {
 import { PokemonWithImage } from "../interfaces/PokeApiResponse";
 import PokemonDetailsModal from "./PokemonDetailsModal";
 
+const capitalize = (str: string) => {
+	return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
 export default function TablePokemons({
 	data,
 	page,
@@ -86,10 +90,10 @@ export default function TablePokemons({
 									</TableCell>
 								</TableRow>
 							) : (
-								data?.map((item: PokemonWithImage) => (
-									<TableRow key={item?.name} className="align-center">
+								data?.map((item: PokemonWithImage, index: number) => (
+									<TableRow key={index} className="align-center">
 										<TableCell align="center" className="border border-gray-200">
-											<h6>{item?.name ? item?.name : "Sin Información"}</h6>{" "}
+											<h6>{item?.name ? capitalize(item.name) : "Sin Información"}</h6>{" "}
 										</TableCell>
 										<TableCell align="center" className="border border-gray-200">
 											<img

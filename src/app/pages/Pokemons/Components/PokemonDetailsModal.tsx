@@ -44,7 +44,7 @@ const PokemonDetailsModal = (props: {
 						p: 4,
 						bgcolor: "background.paper",
 						minWidth: { xs: "300px", sm: "400px", md: "35%", lg: "30%" },
-						width: "auto",
+						maxWidth: "400px",
 						borderRadius: "8px",
 						boxShadow: 24,
 						outline: "none",
@@ -76,7 +76,7 @@ const PokemonDetailsModal = (props: {
 							<TreeItem
 								itemId={String(type?.slot)}
 								key={index}
-								label={type.type.name ? "> " + capitalize(type.type.name) : ""}
+								label={type.type.name ? "- " + capitalize(type.type.name) : ""}
 								className="mb-10"
 								sx={{
 									pointerEvents: "none",
@@ -88,25 +88,21 @@ const PokemonDetailsModal = (props: {
 					<Typography variant="body1" sx={{ mb: 1 }}>
 						Peso: {pokemon?.weight} Kg
 					</Typography>
+
 					<Typography variant="body1" sx={{ mb: 1 }}>
 						Habilidades:
 					</Typography>
 
 					<SimpleTreeView>
 						{pokemon?.abilities?.map((ability, index) => (
+							/* Este elemento */
 							<TreeItem
 								itemId={String(ability?.slot)}
 								key={index}
 								label={ability.ability.name ? capitalize(ability.ability.name) : ""}
 								className="mb-10"
 							>
-								{data && (
-									<TreeItem
-										itemId={`abilitypokemon-${index}`}
-										key={index}
-										label={data[index]?.effect}
-									/>
-								)}
+								{data && <Box key={index}>{data[index]?.effect}</Box>}
 							</TreeItem>
 						))}
 					</SimpleTreeView>
