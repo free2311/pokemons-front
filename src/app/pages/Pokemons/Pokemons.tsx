@@ -34,7 +34,7 @@ export default function Pokemons() {
 
 	return (
 		<>
-			<div className="container-fluid px-10 pt-5 pb-0">
+			<div className="container-fluid px-10 pt-5 pb-0 bg-blue-50">
 				{isLoading ? (
 					<>
 						<ProgressBar progress={progress} />

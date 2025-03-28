@@ -31,45 +31,21 @@ const PokemonDetailsModal = (props: {
 			aria-labelledby="parent-modal-title"
 			aria-describedby="parent-modal-description"
 		>
-			<Box
-				sx={{
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-					height: "100vh",
-				}}
-			>
-				<Box
-					sx={{
-						p: 4,
-						bgcolor: "background.paper",
-						minWidth: { xs: "300px", sm: "400px", md: "35%", lg: "30%" },
-						maxWidth: "400px",
-						borderRadius: "8px",
-						boxShadow: 24,
-						outline: "none",
-					}}
-				>
-					<Box
-						sx={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "space-between",
-							mb: 2,
-						}}
-					>
+			<div className="flex items-center justify-center h-screen">
+				<Box className="p-10 bg-white w-max sm:w-40 md:w-90 lg:w-100 radius-8 shadow-24 outline-none">
+					<Box className="flex items-center justify-between mb-2">
 						<Box sx={{ flexGrow: 1, textAlign: "center" }}>
 							<Typography variant="h6" id="parent-modal-title">
 								Detalles del Pokémon
 							</Typography>
 						</Box>
-						<Typography variant="body1" sx={{ cursor: "pointer" }} onClick={onClose}>
+						<Typography variant="body1" className="cursor-pointer" onClick={onClose}>
 							X
 						</Typography>
 					</Box>
 
 					<SimpleTreeView>
-						<Typography variant="body1" sx={{ mb: 1 }}>
+						<Typography variant="body1" className="!mb-2">
 							Tipo:
 						</Typography>
 						{pokemon?.types?.map((type, index) => (
@@ -77,19 +53,16 @@ const PokemonDetailsModal = (props: {
 								itemId={String(type?.slot)}
 								key={index}
 								label={type.type.name ? "- " + capitalize(type.type.name) : ""}
-								className="mb-10"
-								sx={{
-									pointerEvents: "none",
-								}}
+								className="!mb-2 pointer-events-none"
 							></TreeItem>
 						))}
 					</SimpleTreeView>
 
-					<Typography variant="body1" sx={{ mb: 1 }}>
+					<Typography variant="body1" className="!mb-2">
 						Peso: {pokemon?.weight} Kg
 					</Typography>
 
-					<Typography variant="body1" sx={{ mb: 1 }}>
+					<Typography variant="body1" className="!mb-2">
 						Habilidades:
 					</Typography>
 
@@ -100,14 +73,14 @@ const PokemonDetailsModal = (props: {
 								itemId={String(ability?.slot)}
 								key={index}
 								label={ability.ability.name ? capitalize(ability.ability.name) : ""}
-								className="mb-10"
+								className="!mb-2"
 							>
 								{data && <Box key={index}>{data[index]?.effect}</Box>}
 							</TreeItem>
 						))}
 					</SimpleTreeView>
 				</Box>
-			</Box>
+			</div>
 		</Modal>
 	);
 };

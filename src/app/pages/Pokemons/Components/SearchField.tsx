@@ -28,22 +28,18 @@ const SearchField = ({ value, setInputValue, refetch }: SearchFieldProps) => {
 	};
 
 	return (
-		<TextField
-			label="Buscar Pokémon"
-			variant="outlined"
-			fullWidth
-			margin="normal"
-			value={value}
-			onChange={handleChange}
-			onKeyDown={handleKeyPress}
-			sx={{
-				width: { xs: "100%", sm: "100%", lg: "80%" },
-				maxWidth: "1200px",
-				margin: "auto",
-				display: "block",
-				marginBottom: "20px",
-			}}
-		/>
+		<div className="w-full lg:w-4/5 max-w-[1200px] mx-auto block mb-5">
+			<TextField
+				label="Buscar Pokémon"
+				variant="outlined"
+				fullWidth
+				margin="normal"
+				value={value}
+				onChange={handleChange}
+				onKeyDown={handleKeyPress}
+				className="bg-white"
+			/>
+		</div>
 	);
 };
 

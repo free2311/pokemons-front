@@ -58,18 +58,12 @@ export default function TablePokemons({
 	const rows = ["Nombre", "Imagen Pokemón"];
 
 	return (
-		<div className="">
+		<div>
 			<>
-				<TableContainer
-					sx={{
-						width: { sx: "100%", sm: "100%", md: "100%", lg: "80%" },
-						margin: { sx: "auto", md: "auto", lg: "auto" },
-					}}
-					className="table-container border border-gray-200 card"
-				>
+				<TableContainer className="border border-gray-200 card w-full lg:!w-[80%] mx-auto">
 					<Table size="small" aria-label="simple table">
 						<TableHead>
-							<TableRow className="">
+							<TableRow>
 								{rows.map((row, index) => (
 									<TableCell
 										key={index}
@@ -91,11 +85,11 @@ export default function TablePokemons({
 								</TableRow>
 							) : (
 								data?.map((item: PokemonWithImage, index: number) => (
-									<TableRow key={index} className="align-center">
-										<TableCell align="center" className="border border-gray-200">
+									<TableRow key={index}>
+										<TableCell className="border border-gray-200 !text-center">
 											<h6>{item?.name ? capitalize(item.name) : "Sin Información"}</h6>{" "}
 										</TableCell>
-										<TableCell align="center" className="border border-gray-200">
+										<TableCell className="border border-gray-200">
 											<img
 												src={item?.image}
 												alt={item?.name}
