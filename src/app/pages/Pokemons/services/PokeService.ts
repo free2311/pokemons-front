@@ -20,6 +20,10 @@ class PokeService {
 		try {
 			if (search !== "") {
 				const detailPokemon = await this.getPokemonDetails(search);
+
+				if (!detailPokemon) {
+					return { info: [], countTotal: 0 };
+				}
 				const { pokemon, count } = detailPokemon || { pokemon: null, count: 0 };
 				return { info: [pokemon], countTotal: count };
 			}
@@ -44,7 +48,7 @@ class PokeService {
 			return { info: PokeResult, countTotal: data.count };
 		} catch (error) {
 			console.error("Error fetching Pokemon data:", error);
-			throw error;
+			return { info: [], countTotal: 0 };
 		}
 	}
 
@@ -54,7 +58,7 @@ class PokeService {
 		try {
 			const response = await fetch(`${this.baseUrl}pokemon/${name}`);
 			if (!response.ok) {
-				return null;
+				return null
 			}
 			const pokemon: PokemonData = await response.json();
 
@@ -73,7 +77,7 @@ class PokeService {
 		}
 	}
 
-	async getDescriptionAbilities(abilities: Ability[] | undefined) {
+	async getDescriptionAbilities(abilities: Ability[] | any[]) {
 		try {
 			if (!abilities) return [];
 

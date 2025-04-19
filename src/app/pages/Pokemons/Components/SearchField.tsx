@@ -9,6 +9,7 @@ type SearchFieldProps = {
 const SearchField = ({ value, setInputValue, refetch }: SearchFieldProps) => {
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newValue = event.target.value;
+
 		// Validar solo letras y espacios
 		if (!/^[a-zA-Z\s]*$/.test(newValue)) return;
 		if (newValue == "") {
@@ -28,16 +29,16 @@ const SearchField = ({ value, setInputValue, refetch }: SearchFieldProps) => {
 	};
 
 	return (
-		<div className="w-full lg:w-4/5 max-w-[1200px] mx-auto block mb-5">
+		<div className="w-full mx-auto block mb-5">
 			<TextField
-				label="Buscar Pokémon"
+				label=""
 				variant="outlined"
 				fullWidth
 				margin="normal"
 				value={value}
 				onChange={handleChange}
 				onKeyDown={handleKeyPress}
-				className="bg-white"
+				className="bg-white rounded"
 			/>
 		</div>
 	);
